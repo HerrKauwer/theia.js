@@ -1,4 +1,4 @@
-[![License](https://img.shields.io/badge/license-ISC-blue.svg)]
+![License](https://img.shields.io/badge/license-ISC-blue.svg)
 
 # theia.js
 Takes screenshots of webpages and watches for changes. Emails the result.
