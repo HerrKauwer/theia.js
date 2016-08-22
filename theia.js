@@ -61,7 +61,7 @@ function createDiff(lastPng, prevPng, diffPng, callback) {
                 }
             });
         }, createStep(`convert ${lastPng} ${prevPng} -compose difference -composite -threshold 0 -separate -evaluate-sequence Add -blur 0x2.5 -level 01% mask.png`)
-        , createStep(`convert mask.png -negate mask.png`)
+        , createStep(`convert mask.png -negate -threshold 99% mask.png`)
         , createStep(`convert ${lastPng} -fill "#FFFFFFC8" -draw "color 0,0 reset" fill.png`)
         , createStep(`convert ${lastPng} fill.png mask.png -composite ${diffPng}`)
     ];
@@ -84,9 +84,12 @@ if (!settings.mode) {
     settings.mode = modes.sendEmailOnDiff;
 }
 
-const lastPng = config.outFolder + settings.name + '.png';
-const prevPng = config.outFolder + settings.name + '-prev.png';
-const diffPng = config.outFolder + settings.name + '-diff.png';
+const lastPngFilename = settings.name + '.png';
+const lastPng = config.outFolder + lastPngFilename;
+const prevPngFilename = settings.name + '-prev.png';
+const prevPng = config.outFolder + prevPngFilename;
+const diffPngFilename = settings.name + '-diff.png';
+const diffPng = config.outFolder + diffPngFilename;
 
 let diffDetected = false;
 async.series({
@@ -132,13 +135,13 @@ async.series({
         let attachments = [];
         if (settings.mode === modes.sendEmailOnDiff) {
             attachments = [{
-                filename: lastPng,
+                filename: lastPngFilename,
                 path: lastPng
             }, {
-                filename: prevPng,
+                filename: prevPngFilename,
                 path: prevPng
             }, {
-                filename: diffPng,
+                filename: diffPngFilename,
                 path: diffPng
             }];
 
@@ -148,7 +151,7 @@ async.series({
                 attachments, settings.email, callback);
         } else if (settings.mode === modes.sendEmailEveryTime) {
             attachments = [{
-                filename: lastPng,
+                filename: lastPngFilename,
                 path: lastPng
             }];
 
