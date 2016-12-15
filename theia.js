@@ -25,13 +25,18 @@ function createDiff(lastPng, prevPng, diffPng, callback) {
         };
     }
 
-    let changedPixels;
+    let changedPixels = 0;
 
     const tasks = [
         callback => {
             const cmd = `compare -metric ae ${lastPng} ${prevPng} null:`;
 
             childProcess.exec(cmd, (err, stdout, stderr) => {
+                if (err && stderr.includes("image widths or heights differ")) {
+                    console.log("Image size has changed");
+                    return callback();
+                }
+
                 if (err) return callback(err);
 
                 changedPixels = Number.parseInt(stderr);
@@ -45,6 +50,9 @@ function createDiff(lastPng, prevPng, diffPng, callback) {
                 }
             });
         }, callback => {
+            if (changedPixels === 0)
+                return callback();
+
             const cmd = `identify -format "%[fx:${changedPixels}*100/(w*h)]" ${lastPng}`;
 
             childProcess.exec(cmd, (err, stdout, stderr) => {
