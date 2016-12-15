@@ -21,9 +21,14 @@ if (settings.cookies) {
 page.viewportSize = settings.viewportSize || {"width": 400, "height": 300};
 page.clipRect = settings.clipRect || {"height": 0, "left": 0, "top": 0, "width": 0};
 page.open(settings.url, function () {
+    page.evaluate(function () {
+        if (document.body.style.backgroundColor == '')
+            document.body.style.backgroundColor = 'white';
+    });
+
     setTimeout(function () {
         page.render(filename);
         console.log('Rendered to ' + filename);
         phantom.exit();
-    }, 1000);
+    }, 5000);
 });
