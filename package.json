@@ -1,0 +1,23 @@
+{
+  "name": "theia.js",
+  "version": "1.0.0",
+  "description": "0.0.1",
+  "main": "theia.js",
+  "dependencies": {
+    "async": "^2.0.1",
+    "gm": "^1.23.0",
+    "nodemailer": "^2.5.0",
+    "phantomjs-prebuilt": "^2.1.10"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "webwatcher",
+    "watcher",
+    "phantomjs"
+  ],
+  "author": "Marvin Kauw",
+  "license": "ISC"
+}
