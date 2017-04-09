@@ -1,5 +1,5 @@
 const mailer = require("nodemailer");
-const fs = require('fs');
+const async = require('async');
 const config = require('../config');
 
 const smtpTransport = mailer.createTransport(config.emailTransport);
@@ -7,15 +7,22 @@ const smtpTransport = mailer.createTransport(config.emailTransport);
 exports.sendDiffMail = (subject, body, attachments, emailaddress, callback) => {
     const mailOptions = {
         from: config.emailFrom,
-        to: emailaddress,
         subject: subject,
         text: body,
         attachments: attachments
     };
 
-    console.log("sending to " + mailOptions.to);
-    
-    smtpTransport.sendMail(mailOptions, (error, response) => {
-        callback(error, response);
+    const splitAddresses = emailaddress.split(",");
+
+    async.eachSeries(splitAddresses, (emailaddress, callback) => {
+        mailOptions.to = emailaddress;
+
+        console.log(`sending to ${emailaddress}`);
+
+        smtpTransport.sendMail(mailOptions, (error, response) => {
+            callback(error);
+        });
+    }, error => {
+        callback(error);
     });
 };
