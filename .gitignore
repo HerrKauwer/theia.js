@@ -38,5 +38,6 @@ jspm_packages
 
 *.json
 !package.json
+!package-lock.json
 screens
 .idea

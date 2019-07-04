@@ -2,13 +2,12 @@
 
 const path = require('path');
 const childProcess = require('child_process');
-const phantomjs = require('phantomjs-prebuilt');
-const binPath = phantomjs.path;
 const fs = require('fs');
 const async = require('async');
 const fileHelper = require('./helpers/file');
 const mailHelper = require('./helpers/mail');
 const config = require('./config');
+const puppeteer = require('puppeteer');
 
 const modes = {
     'sendEmailOnDiff': 0,
@@ -101,20 +100,31 @@ const diffPng = config.outFolder + diffPngFilename;
 
 let diffDetected = false;
 async.series({
-    renderPage: callback => {
-        const args = [path.join(__dirname, 'phantom.js'), configPath, lastPng];
+    renderPage: async () => {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.setViewport(settings.viewportSize || { width: 1024, height: 768, deviceScaleFactor: 1 });
 
-        childProcess.execFile(binPath, args, (err, stdout, stderr) => {
-            if (err || stderr) return callback(err || stderr);
+        if (settings.cookies) {
+            for (var i = 0; i < settings.cookies.length; i++) {
+                var cookie = settings.cookies[i];
+                await page.setCookie(cookie);
+            }
+        }
 
-            console.log(stdout);
+        await page.goto(settings.url);
 
-            fs.access(lastPng, fs.F_OK, (err) => {
-                if (err) return callback("Screenshot of webpage was not found, phantom failed?");
+        if (settings.captureSelector) {
+            const calElement = await page.$(settings.captureSelector);
+            if (calElement == null) {
+                return error(`Selection ${settings.captureSelector} selected no elements`)
+            }
+            await calElement.screenshot({ path: lastPng });
+        } else {
+            await page.screenshot({ path: lastPng, clip: settings.clipRect, fullPage: true });
+        }
 
-                callback();
-            });
-        });
+        await browser.close();
     },
     generateAndCheckDiff: callback => {
         if (settings.mode === modes.sendEmailEveryTime)
