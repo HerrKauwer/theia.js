@@ -31,12 +31,15 @@ function createDiff(lastPng, prevPng, diffPng, callback) {
             const cmd = `compare -metric ae ${lastPng} ${prevPng} null:`;
 
             childProcess.exec(cmd, (err, stdout, stderr) => {
-                if (err && stderr.includes("image widths or heights differ")) {
-                    console.log("Image size has changed");
-                    return callback();
-                }
+                if (err) {
+                    if (stderr.includes("image widths or heights differ")) {
+                        console.log("Image size has changed");
+                        return callback();
+                    }
 
-                if (err) return callback(err);
+                    if (err.code === 2)
+                        return callback(err);
+                }
 
                 changedPixels = Number.parseInt(stderr);
 
