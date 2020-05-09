@@ -10,17 +10,19 @@ This resulted in theia.js. I didn't recreate the GUI and this tool should be cal
 You could use this tool to watch websites for price changes or check if your own website still works.
 
 ## Requirements
-    * Imagemagick
-    * Node.js 4.x LTS
+    * Docker
+    * Docker-compose
 
-## Installing
+## Building
+
 ```bash
 $ git clone https://github.com/HerrKauwer/theia.js.git
-$ npm install
+$ cd theia.js
+$ docker build -t theia .
 ```
 
-## Configure email server in config.js
-theia.js uses [nodemailer](https://github.com/nodemailer/nodemailer) to send emails. The included config.js contains an example for Gmail. For more info see their Github page. 
+### Configure email server in example/config.js
+theia.js uses [nodemailer](https://github.com/nodemailer/nodemailer) to send emails. The included config.js contains an example for Gmail. For more info see their Github page.
 
 ## The config file
 Every page that you want to watch requires a config file. These files are JSON formatted and 2 required properties:
@@ -98,10 +100,10 @@ reddit.json
 
 ## Example cron job
 
-    0 10 * * * cd ~/theia.js && node theia.js github.json >> /var/log/theia.js/github.log 2>&1
+    0 10 * * * cd /opt/theia.js && docker-compose run --rm theia github.json >> /var/log/theia.js/github.log 2>&1
 
 ---
 I hope you find this project useful, at least I enjoyed building it. Development is still ongoing. Feel free send in feature requests.
 
 ## License
-ISC © 2016 Marvin Kauw
+ISC © 2020 Marvin Kauw

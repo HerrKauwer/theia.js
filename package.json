@@ -4,10 +4,9 @@
   "description": "0.0.1",
   "main": "theia.js",
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.0",
     "gm": "^1.23.1",
-    "nodemailer": "^6.2.1",
-    "puppeteer": "^1.18.1"
+    "nodemailer": "^6.4.6"
   },
   "devDependencies": {},
   "scripts": {

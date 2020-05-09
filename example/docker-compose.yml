@@ -1,0 +1,8 @@
+version: '3'
+services:
+  theia:
+    image: theia:latest
+    volumes:
+      - "./config.js:/usr/src/app/config.js"
+      - "./screens:/usr/src/app/screens"
+      - "./configs:/usr/src/app/configs"

@@ -1,0 +1,22 @@
+{
+    "viewportSize": {
+        "width": 1024,
+        "height": 768
+    },
+    "clipRect": {
+        "left": 0,
+        "top": 19,
+        "width": 117,
+        "height": 45
+    },
+    "url": "https://www.reddit.com/",
+    "cookies": [
+        {
+            "name": "example",
+            "value": "some value",
+            "path": "/",
+            "domain": "www.reddit.com"
+        }
+    ],
+    "email": "myemail@example.com"
+}
