@@ -11,7 +11,7 @@ You could use this tool to watch websites for price changes or check if your own
 
 ## Requirements
     * Docker
-    * Docker-compose
+    * Docker compose
 
 ## Building
 
@@ -43,7 +43,7 @@ There a 4 optional properties:
 ```
 {
   "viewportSize": { "width": 1024, "height": 768 },
-  "clipRect": { "left": 279, "top": 495, "width": 709, "height": 1807 },
+  "clipRect": { "x": 279, "y": 495, "width": 709, "height": 1807 },
   "cookies": [
     {
       "name": "consent",
@@ -84,7 +84,7 @@ reddit.json
 ```
 {
   "viewportSize": { "width": 1024, "height": 768 },
-  "clipRect": { "left": 0, "top": 19, "width": 117, "height": 45 },
+  "clipRect": { "x": 0, "y": 19, "width": 117, "height": 45 },
   "url": "https://www.reddit.com/",
   "cookies": [
     {
@@ -100,7 +100,7 @@ reddit.json
 
 ## Example cron job
 
-    0 10 * * * cd /opt/theia.js && docker-compose run --rm theia github.json >> /var/log/theia.js/github.log 2>&1
+    0 10 * * * cd /opt/theia.js && docker compose run --rm theia github.json >> /var/log/theia.js/github.log 2>&1
 
 ---
 I hope you find this project useful, at least I enjoyed building it. Development is still ongoing. Feel free send in feature requests.

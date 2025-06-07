@@ -6,7 +6,7 @@ const fs = require('fs');
 const async = require('async');
 const fileHelper = require('./helpers/file');
 const mailHelper = require('./helpers/mail');
-const config = require('./config');
+const config = require('./config.js');
 const puppeteer = require('puppeteer');
 
 const modes = {
@@ -133,7 +133,11 @@ async.series({
             }
             await calElement.screenshot({ path: lastPng });
         } else {
-            await page.screenshot({ path: lastPng, clip: settings.clipRect, fullPage: true });
+            if (settings.clipRect) {
+                await page.screenshot({ path: lastPng, clip: settings.clipRect });
+            } else{
+                await page.screenshot({ path: lastPng, fullPage: true });
+            }
         }
 
         await browser.close();

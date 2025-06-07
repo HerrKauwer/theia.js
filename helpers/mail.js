@@ -1,6 +1,6 @@
 const mailer = require("nodemailer");
 const async = require('async');
-const config = require('../config');
+const config = require('../config.js');
 
 const smtpTransport = mailer.createTransport(config.emailTransport);
 
